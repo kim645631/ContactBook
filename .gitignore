@@ -39,3 +39,11 @@
 
 # debug information files
 *.dwo
+
+# Qt build files
+Makefile
+ui_*.h
+moc_*.cpp
+moc_predefs.h
+.qmake.stash
+ContactBook
