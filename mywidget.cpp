@@ -3,6 +3,8 @@
 
 #include<QFile>
 #include<QDebug>
+#include<QTextStream>
+#include<QApplication>
 
 QString mFilename = "C:/Users/user/Desktop/EX/myfile.txt";
 
@@ -17,6 +19,19 @@ void Write(QString Filename,QString str)
     out<<str;
     mFile.flush();
     mFile.close();
+}
+
+QString Read(QString Filename)
+{
+    QFile mFile(Filename);
+    if(!mFile.open(QFile::ReadOnly | QFile::Text)){
+        qDebug()<<"could not open file for read";
+        return "";
+    }
+    QTextStream in(&mFile);
+    QString text = in.readAll();
+    mFile.close();
+    return text;
 }
 
 MyWidget::MyWidget(QWidget *parent)
@@ -68,5 +83,42 @@ void MyWidget::on_pushButton_clicked()
         saveFile+="\n";
     }
     Write(mFilename,saveFile);
+}
+
+
+void MyWidget::on_pushButton_3_clicked()
+{
+    QString fileContent = Read(mFilename);
+    if(fileContent.isEmpty()){
+        qDebug()<<"File is empty or could not be read";
+        return;
+    }
+    
+    // Clear existing table data
+    ui->tableWidget->setRowCount(0);
+    
+    // Split by lines
+    QStringList lines = fileContent.split("\n", Qt::SkipEmptyParts);
+    
+    for(int i=0; i<lines.size(); i++){
+        QString line = lines[i];
+        QStringList fields = line.split(",");
+        
+        // Each line should have at least 4 fields (學號, 班級, 姓名, 電話)
+        if(fields.size() >= 4){
+            ui->tableWidget->insertRow(ui->tableWidget->rowCount());
+            
+            for(int j=0; j<4 && j<fields.size(); j++){
+                QTableWidgetItem *item = new QTableWidgetItem(fields[j]);
+                ui->tableWidget->setItem(ui->tableWidget->rowCount()-1, j, item);
+            }
+        }
+    }
+}
+
+
+void MyWidget::on_pushButton_4_clicked()
+{
+    QApplication::quit();
 }
 
