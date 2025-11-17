@@ -50,6 +50,11 @@ void MyWidget::on_pushButton_2_clicked()
     ui->tableWidget->setItem(ui->tableWidget->rowCount()-1,1,inputRow2);
     ui->tableWidget->setItem(ui->tableWidget->rowCount()-1,2,inputRow3);
     ui->tableWidget->setItem(ui->tableWidget->rowCount()-1,3,inputRow4);
+
+    ui->lineEdit->setText("");
+    ui->lineEdit_2->setText("");
+    ui->lineEdit_3->setText("");
+    ui->lineEdit_4->setText("");
 }
 
 
